@@ -12,8 +12,7 @@ aliph29 (2920): aliphatics, lipids, and waxes
 
 New in this version (Jan. 27, 2017): Also calculates areas for each peak, and exports as CSVs called Raw.Areas, Corr.Areas, Norm.Raw.Areas, and Norm.Corr.Areas (defined similarly to the peak height files). Filenames of peak height output files have also been changed to avoid confusing them with the area files. For peaks that share the same baseline, the baseline remains unchanged and the areas are defined between each endpoint and the trough between the peaks. So to get the total area of the aliphatic region (for example), add the areas of the aliph28 and aliph29 peaks.
 
-For details on the use of this program, including a tutorial and description of all output files, see the included file "procedure for R program.docx". For further questions, contact the author, Dr. Suzanne Hodgkins (suzanne.b.hodgkins@gmail.com).
-
+For details on the use of this program, including a tutorial and description of all output files, see the included file "procedure for R program.docx".
 
 # Licensing
 Copyright © 2017 Suzanne Hodgkins and Florida State University.
