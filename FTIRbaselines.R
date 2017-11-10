@@ -1,5 +1,7 @@
 # FTIRbaselines: Processes FTIR spectra of natural organic matter by finding exact peak locations, baseline-correcting the peaks, and converting them to relative abundances.
 #
+# New in this version (Jan. 27, 2017): Also calculates areas for each peak, and exports as CSVs called Raw.Areas, Corr.Areas, Norm.Raw.Areas, and Norm.Corr.Areas (defined similarly to the peak height files). For peaks that share the same baseline, the baseline remains unchanged and the areas are defined between each endpoint and the trough. So to get the total area of the aliphatic region, add the areas of the aliph28 and aliph29 peaks.
+#
 # Copyright © 2017 Suzanne Hodgkins and Florida State University.
 #
 # This program is free software: you can redistribute it and/or modify
@@ -27,8 +29,6 @@ This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you
 are welcome to redistribute it under the terms of the GNU General Public
 License (version 3 or later). This license is included with this program and
 is also available at <http://www.gnu.org/licenses/>.")
-
-# New in this version (Jan. 27, 2017): Also calculates areas for each peak, and exports as CSVs called Raw.Areas, Corr.Areas, Norm.Raw.Areas, and Norm.Corr.Areas (defined similarly to the peak height files). For peaks that share the same baseline, the baseline remains unchanged and the areas are defined between each endpoint and the trough. So to get the total area of the aliphatic region, add the areas of the aliph28 and aliph29 peaks.
 
 # Import data ----
 
