@@ -10,8 +10,7 @@ acids (1720): protonated COOH
 aliph28 (2850): aliphatics, lipids, and waxes
 aliph29 (2920): aliphatics, lipids, and waxes
 
-For details on the use of this program, including a tutorial and description of all output files, see the included file "procedure for R program.docx". For further questions, contact the author, Dr. Suzanne Hodgkins (suzanne.b.hodgkins@gmail.com).
-
+For details on the use of this program, including a tutorial and description of all output files, see the included file "procedure for R program.docx".
 
 # Licensing
 Copyright © 2017 Suzanne Hodgkins and Florida State University.
