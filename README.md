@@ -14,7 +14,6 @@ For details on the use of this program, including a tutorial and description of 
 
 
 # Licensing
-
 Copyright © 2017 Suzanne Hodgkins and Florida State University.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
