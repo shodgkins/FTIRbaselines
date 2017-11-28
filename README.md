@@ -14,6 +14,9 @@ New in this version (Jan. 27, 2017): Also calculates areas for each peak, and ex
 
 For details on the use of this program, including a tutorial and description of all output files, see the included file "procedure for R program.docx".
 
+An example dataset is included in the file "example_data.csv". Humification indices for these spectra (based on fixed wavenumbers, not using this script) are published in the following manuscript:
+Hodgkins S. B., Tfaily M. M., McCalley C. K., Logan T. A., Crill P. M., Saleska S. R., Rich V. I. and Chanton J. P. (2014) Changes in peat chemistry associated with permafrost thaw increase greenhouse gas production. Proc. Natl. Acad. Sci. USA 111, 5819–5824.
+
 # Licensing
 Copyright © 2017 Suzanne Hodgkins and Florida State University.
 
