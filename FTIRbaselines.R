@@ -1,5 +1,7 @@
 # FTIRbaselines: Processes FTIR spectra of natural organic matter by finding exact peak locations, baseline-correcting the peaks, and converting them to relative abundances.
 #
+# New in this version (Jan. 27, 2017): Also calculates areas for each peak, and exports as CSVs called Raw.Areas, Corr.Areas, Norm.Raw.Areas, and Norm.Corr.Areas (defined similarly to the peak height files). Filenames of peak height output files have also been changed to avoid confusing them with the area files. For peaks that share the same baseline, the baseline remains unchanged and the areas are defined between each endpoint and the trough between the peaks. So to get the total area of the aliphatic region (for example), add the areas of the aliph28 and aliph29 peaks.
+#
 # Copyright © 2017 Suzanne Hodgkins and Florida State University.
 #
 # This program is free software: you can redistribute it and/or modify
@@ -62,6 +64,8 @@ Ab <- Wp
 Acorr <- Wp
 success.W1 <- Wp
 success.W2 <- Wp
+area.wholepeak <- Wp
+area.corrpeak <- Wp
 notes <- data.frame(aliph.type=rep(NA,length(data)), acids.type=rep(NA,length(data)), notes=rep(NA,length(data)), row.names=names(data))
 
 # Function for finding peak boundaries
@@ -183,6 +187,10 @@ for(i in seq_along(data)) {
   a.wholepeak <- y[x %in% w.wholepeak]
   a.corrpeak <- a.wholepeak-((a2-a1)*(w.wholepeak-w1)/(w2-w1)+a1)
 
+  # peak areas
+  area.wholepeak[i,"carb"] <- sum(a.wholepeak)
+  area.corrpeak[i,"carb"] <- sum(a.corrpeak)
+
   # pick out peak location
   Acorr[i,"carb"] <- max(a.corrpeak)
   Wp[i,"carb"] <- min(w.wholepeak[a.corrpeak==Acorr[i,"carb"]]) # the min accounts for unlikely event of 2 peaks with exactly the same y; the same is true for all other peaks defined as min(w.wholepeak...) etc.
@@ -231,6 +239,10 @@ for(i in seq_along(data)) {
   w.wholepeak <- w2:w1
   a.wholepeak <- y[x %in% w.wholepeak]
   a.corrpeak <- a.wholepeak-((a2-a1)*(w.wholepeak-w1)/(w2-w1)+a1)
+
+  # peak areas
+  area.wholepeak[i,"arom15"] <- sum(a.wholepeak)
+  area.corrpeak[i,"arom15"] <- sum(a.corrpeak)
 
   # pick out peak location
   Acorr[i,"arom15"] <- max(a.corrpeak)
@@ -363,6 +375,13 @@ for(i in seq_along(data)) {
     notes[i, "acids.type"] <- paste0(notes[i, "acids.type"], ", negative")
   }
 
+  # peak area of arom16 (<= trough16)
+  area.wholepeak[i,"arom16"] <- sum(a.wholepeak[w.wholepeak %in% w1:Wp[i,"trough16"]])
+  area.corrpeak[i,"arom16"] <- sum(a.corrpeak[w.wholepeak %in% w1:Wp[i,"trough16"]])
+  # peak area of acids (> trough16)
+  area.wholepeak[i,"acids"] <- sum(a.wholepeak[w.wholepeak %in% (Wp[i,"trough16"]+1):w2])
+  area.corrpeak[i,"acids"] <- sum(a.corrpeak[w.wholepeak %in% (Wp[i,"trough16"]+1):w2])
+
   rm(w1.result, w2.result, w1, w2, a1, a2, w.wholepeak, a.wholepeak, a.corrpeak, tr.ini, default.trough16, default.acids)
 
 
@@ -481,6 +500,13 @@ for(i in seq_along(data)) {
     Ab[i,"aliph28"] <- Ap[i,"aliph28"] - Acorr[i,"aliph28"]
   }
 
+  # peak area of aliph28 (<= trough28)
+  area.wholepeak[i,"aliph28"] <- sum(a.wholepeak[w.wholepeak %in% w1:Wp[i,"trough28"]])
+  area.corrpeak[i,"aliph28"] <- sum(a.corrpeak[w.wholepeak %in% w1:Wp[i,"trough28"]])
+  # peak area of aliph29 (> trough28)
+  area.wholepeak[i,"aliph29"] <- sum(a.wholepeak[w.wholepeak %in% (Wp[i,"trough28"]+1):w2])
+  area.corrpeak[i,"aliph29"] <- sum(a.corrpeak[w.wholepeak %in% (Wp[i,"trough28"]+1):w2])
+
   rm(w1.result, w2.result, w1, w2, a1, a2, w.wholepeak, a.wholepeak, a.corrpeak, type)
 
 
@@ -574,11 +600,13 @@ if(show16 == 'y' | show16 == 'Y') {
 area <- apply(data, 2, sum)
 silicate780 <- as.numeric(data[x==780,])
 norm.silicate780 <- silicate780/area
-area_silicate <- data.frame(area, silicate780, norm.silicate780)
+area_and_silicate <- data.frame(area, silicate780, norm.silicate780)
 
 # Normalize to area ----
 norm.Ap <- Ap/area
 norm.Acorr <- Acorr/area
+norm.area.wholepeak <- area.wholepeak/area
+norm.area.corrpeak <- area.corrpeak/area
 
 # Export data ----
 
@@ -591,14 +619,18 @@ dataset.name <- gsub("\\W", "_", dataset.name) # replace all non-alphanumeric ch
 dir.create(dataset.name)  # create a new folder for output files
 
 write.csv(data, file.path(getwd(), dataset.name, filename))
-write.csv(area_silicate, file.path(getwd(), dataset.name, "Area.and.780.csv"))
-write.csv(Wp, file.path(getwd(), dataset.name, "Wavenumbers.csv"))
+write.csv(area_and_silicate, file.path(getwd(), dataset.name, "TotalArea.and.780.csv"))
+write.csv(Wp, file.path(getwd(), dataset.name, "Wp.csv"))
 write.csv(W1, file.path(getwd(), dataset.name, "W1.csv"))
 write.csv(W2, file.path(getwd(), dataset.name, "W2.csv"))
-write.csv(Ap, file.path(getwd(), dataset.name, "Raw.Peaks.csv"))
-write.csv(Acorr, file.path(getwd(), dataset.name, "Corr.Peaks.csv"))
-write.csv(norm.Ap, file.path(getwd(), dataset.name, "Norm.Raw.Peaks.csv"))
-write.csv(norm.Acorr, file.path(getwd(), dataset.name, "Norm.Corr.Peaks.csv"))
+write.csv(Ap, file.path(getwd(), dataset.name, "Heights_Raw.csv"))
+write.csv(Acorr, file.path(getwd(), dataset.name, "Heights_Corr.csv"))
+write.csv(norm.Ap, file.path(getwd(), dataset.name, "Heights_Norm.Raw.csv"))
+write.csv(norm.Acorr, file.path(getwd(), dataset.name, "Heights_Norm.Corr.csv"))
+write.csv(area.wholepeak, file.path(getwd(), dataset.name, "Areas_Raw.csv"))
+write.csv(area.corrpeak, file.path(getwd(), dataset.name, "Areas_Corr.csv"))
+write.csv(norm.area.wholepeak, file.path(getwd(), dataset.name, "Areas_Norm.Raw.csv"))
+write.csv(norm.area.corrpeak, file.path(getwd(), dataset.name, "Areas_Norm.Corr.csv"))
 write.csv(success.W1, file.path(getwd(), dataset.name, "success.W1.csv"))
 write.csv(success.W2, file.path(getwd(), dataset.name, "success.W2.csv"))
 write.csv(notes, file.path(getwd(), dataset.name, "Notes.csv"))
