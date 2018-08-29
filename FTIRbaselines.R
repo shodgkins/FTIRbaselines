@@ -2,7 +2,7 @@
 #
 # New in this version (Jan. 27, 2017): Also calculates areas for each peak, and exports as CSVs called Raw.Areas, Corr.Areas, Norm.Raw.Areas, and Norm.Corr.Areas (defined similarly to the peak height files). Filenames of peak height output files have also been changed to avoid confusing them with the area files. For peaks that share the same baseline, the baseline remains unchanged and the areas are defined between each endpoint and the trough between the peaks. So to get the total area of the aliphatic region (for example), add the areas of the aliph28 and aliph29 peaks.
 #
-# Copyright © 2017 Suzanne Hodgkins and Florida State University.
+# Copyright 2017 Suzanne Hodgkins and Florida State University.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 # Contact: Dr. Suzanne Hodgkins, suzanne.b.hodgkins@gmail.com
 
 # Startup notice ----
-cat("FTIRbaselines: Copyright © 2017 Suzanne Hodgkins and Florida State University.
+cat("FTIRbaselines: Copyright \u00a9 2017 Suzanne Hodgkins and Florida State University.
 This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you
 are welcome to redistribute it under the terms of the GNU General Public
 License (version 3 or later). This license is included with this program and
